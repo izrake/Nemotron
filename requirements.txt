@@ -1,0 +1,10 @@
+# File: requirements.txt
+
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+transformers
+torch
+huggingface-hub
+numpy
