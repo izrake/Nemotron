@@ -11,6 +11,7 @@ class Settings(BaseSettings):
         "meta-llama/Llama-3.2-3B-Instruct",
         "meta-llama/Llama-3.2-11B-Vision-Instruct",
     ]
+    ALLOWED_ORIGINS: list = ["*"]
 
 settings = Settings()
 
