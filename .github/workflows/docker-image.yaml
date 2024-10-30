@@ -27,4 +27,4 @@
          with:
            context: .
            push: true
-           tags: buidlwithme/chatapi:v1.0.1
+           tags: buidlwithme/chatapi:v1.0.2

@@ -1,0 +1,47 @@
+version: "1.0"
+
+services:
+  chatapi:
+    image: buidlwithme/chatapi:v1.0.2
+    pull_policy: Always
+    expose:
+      - port: 8000
+        as: 8000
+        to:
+          - global: true
+    env:
+      - huggingface_token=
+profiles:
+  name: chatapi
+  mode: fizz
+  duration: 3h
+  tier:
+    - community
+  compute:
+    chatapi:
+      resources:
+        cpu:
+          units: 4
+        memory:
+          size: 8Gi
+        storage:
+          - size: 100Gi
+        gpu:
+          units: 1
+          attributes:
+            vendor:
+              nvidia:
+                - model: rtx4090
+  placement:
+    centralcoast:
+      attributes:
+        region: romania
+      pricing:
+        chatapi:
+          token: USDT
+          amount: 1   
+deployment:
+  chatapi:
+    centralcoast:
+      profile: chatapi
+      count: 1
