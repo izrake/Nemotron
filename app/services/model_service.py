@@ -14,6 +14,7 @@ class ModelService:
     def __init__(self):
         self.loaded_models: Dict[str, Dict] = {}
         self.hf_token = os.environ.get("HUGGINGFACE_TOKEN")
+        print(self.hf_token)
         if self.hf_token:
             login(token=self.hf_token)
         
@@ -24,8 +25,7 @@ class ModelService:
         if model_name not in self.loaded_models:
             try:
                 logger.info(f"Loading model: {model_name}")
-                tokenizer = AutoTokenizer.from_pretrained(model_name, use_auth_token=self.hf_token)
-                model = AutoModelForCausalLM.from_pretrained(model_name, use_auth_token=self.hf_token).to(self.device)
+                model, tokenizer = self.load_model_from_pretrained(model_name)
                 self.loaded_models[model_name] = {
                     "tokenizer": tokenizer,
                     "model": model
@@ -35,6 +35,22 @@ class ModelService:
                 logger.error(f"Failed to load model {model_name}: {str(e)}")
                 raise Exception(f"Failed to load model {model_name}: {str(e)}")
         return self.loaded_models[model_name]
+
+    def load_model_from_pretrained(self, model_name: str):
+        try:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                token=settings.HUGGINGFACE_TOKEN,
+                device_map="auto"
+            )
+            tokenizer = AutoTokenizer.from_pretrained(
+                model_name,
+                token=settings.HUGGINGFACE_TOKEN,
+            )
+            return model, tokenizer
+        except Exception as e:
+            logger.error(f"Error loading model {model_name}: {str(e)}")
+            raise
 
     def generate_text(self, model_name: str, prompt: str, max_tokens: int, temperature: float):
         logger.info(f"Generating text for model: {model_name}")

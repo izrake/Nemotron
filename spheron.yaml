@@ -10,7 +10,7 @@ services:
         to:
           - global: true
     env:
-      - huggingface_token=
+      - HUGGINGFACE_TOKEN=
 profiles:
   name: chatapi
   mode: fizz
@@ -21,9 +21,9 @@ profiles:
     chatapi:
       resources:
         cpu:
-          units: 4
+          units: 8
         memory:
-          size: 8Gi
+          size: 16Gi
         storage:
           - size: 100Gi
         gpu:
@@ -34,8 +34,6 @@ profiles:
                 - model: rtx4090
   placement:
     centralcoast:
-      attributes:
-        region: romania
       pricing:
         chatapi:
           token: USDT
