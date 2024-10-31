@@ -1,5 +1,5 @@
 # Use the latest CUDA-enabled Python runtime as the base image
-FROM nvidia/cuda:12.1.0-runtime-ubuntu22.04
+FROM nvidia/cuda:12.5.1-cudnn-devel-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
