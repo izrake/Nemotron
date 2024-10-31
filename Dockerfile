@@ -1,10 +1,12 @@
 # Use the latest CUDA-enabled Python runtime as the base image
-FROM nvidia/cuda:12.5.1-cudnn-devel-ubuntu22.04
+FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 # Set environment variables
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV HUGGINGFACE_TOKEN=""
+ENV NVIDIA_VISIBLE_DEVICES all
+ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
 # Install Python and other necessary packages
 RUN apt-get update && apt-get install -y \
