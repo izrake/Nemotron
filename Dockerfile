@@ -2,9 +2,10 @@
 FROM nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
 # Set environment variables
+ARG HUGGINGFACE_TOKEN
+ENV HUGGINGFACE_TOKEN=${HUGGINGFACE_TOKEN}
 ENV PYTHONUNBUFFERED=1
 ENV DEBIAN_FRONTEND=noninteractive
-ENV HUGGINGFACE_TOKEN=""
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
 
@@ -13,6 +14,7 @@ RUN apt-get update && apt-get install -y \
     python3.10 \
     python3-pip \
     python3.10-dev \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
@@ -22,7 +24,9 @@ WORKDIR /nemotron
 COPY requirements.txt .
 
 # Install the project dependencies
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir --upgrade pip && \
+    pip3 install --no-cache-dir setuptools wheel && \
+    pip3 install --no-cache-dir -r requirements.txt
 
 # Copy the project files into the container
 COPY . .
